@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calculator_new</title>
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans+Condensed:300|Roboto|VT323" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400|Lobster" rel="stylesheet">
+	<style type="text/css">
+	  body{
+          font-family: 'Roboto', sans-serif;
+         text-shadow: 1px 1px 3px rgba(0,0,0,.6);
+      }
+    body h2,body small{
+         color: #2F879D;
+         letter-spacing: 1px;
+    }
+    .brand{
+      text-align: left;
+      color: silver;
+      position: relative;
+      left: 12px;
+      bottom: 12px;
+      font-family: 'Lobster', cursive;
+    }
+	    form{
+          background-color: #1B1B1B;
+          width: 286px;
+          height: auto;
+          margin: 55px auto;
+          padding: 20px 0 0 0;
+          border-radius: 2px;
+          box-shadow: 12px 12px 20px rgba(0,0,0,0.6);
+	    }
+	    textarea{
+	    	width: 85%;
+	    	min-height:60px ;
+	    	background-color: #171717;
+        color: #fff;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 5px;
+        text-align: right;
+	    	font-size: 30px;
+	    	outline: 0;
+	    }
+		input[type='button']{
+			padding: 15px 0;
+      margin-bottom: 2px;
+			width: 68px;
+			height: auto;
+      text-align: center;
+			background: #232323;
+			color: #fff;
+			border: none;
+			font-size: 20px;
+			outline: 0;
+			transition: .3s all;
+		}
+		input[type='button'].reset{
+			background-color: #FF4864;
+		}
+		input[type='button']:hover{
+			cursor: pointer;
+			background-color: #FFC309;
+			color: #000;
+		}
+	</style>
+</head>
+<body>
+      <!--<center> <h2>Javascript Calculator</h2></center>-->
+    <form name="calc">
+        <small class="brand">javascript calculator</small>
+        <br>
+
+     <center>
+       <textarea rows="4" cols="20" name="display" placeholder="0" id="display" readonly>
+       </textarea>
+       <br>
+       <input type="button" name="" value="AC" onclick="cancel()" class="reset" />
+       <input type="button" name="" value="DEL" onclick="del()" class="reset" />
+       <br>
+       <input type="button" name="" value="7" onclick="press_value('7')"/>
+       <input type="button" name="" value="8" onclick="press_value('8')"/>
+       <input type="button" name="" value="9" onclick="press_value('9')"/>
+       <input type="button" name="" value="/" onclick="setOperation('/')"/>
+       <br>
+       <input type="button" name="" value="4" onclick="press_value('4')"/>
+       <input type="button" name="" value="5" onclick="press_value('5')"/>
+       <input type="button" name="" value="6" onclick="press_value('6')"/>
+       <input type="button" name="" value="x" onclick="setOperation('*')"/>
+       <br>
+       <input type="button" name="" value="1" onclick="press_value('1')"/>
+       <input type="button" name="" value="2" onclick="press_value('2')"/>
+       <input type="button" name="" value="3" onclick="press_value('3')"/>
+       <input type="button" name="" value="-" onclick="setOperation('-')"/>
+       <br> 
+       <input type="button" name="" value="0" onclick="press_value('0')"/>
+       <input type="button" name="" value="." onclick="insertDecimal('.')"/>
+       <input type="button" name="" value="=" onclick="calculate()"/>
+       <input type="button" name="" value="+" onclick="setOperation('+')"/>
+       <br> 
+     </center> 
+   </form>
+
+   <script type="text/javascript">
+            var displayNum = "",
+            storedNum = "",
+            operation = 0,
+            calculationFinished = false;
+       function press_value(num){
+                  var display = document.getElementById("display");
+                  if (  (display.value == "0") && (num == "0")  )  
+                     {
+                      return;
+                     }
+                  else if(display.value == "0" || calculationFinished == true){
+                    display.value = num;
+                    calculationFinished = false;
+                    }
+                  else if(display.value.length>40){
+                    display.value = "out of range. Plz press AC to clear.";
+                    }
+                  else {
+                        display.value += num;
+                       }
+          }
+
+        function insertDecimal(dec) {
+               // Select the calculator's display
+               var display = document.getElementById("display");
+
+                    // Loop through the current number to make sure there isn't already a decimal
+                for (i = 0; i < display.value.length; i++)
+                      if (display.value.charAt(i) == '.') {
+                            // If there is, do nothing
+                            return;
+                        }
+                    // If there isn't add a decimal to the end of the displayed number
+                        display.value += dec;
+          }
+
+        function setOperation(command) {
+            var display = document.getElementById("display"),
+                    displayNum = display.value;
+               
+            if (operation == 0) {
+                storedNum = display.value;
+            }
+            else if (operation == 1) {
+                storedNum = Number(storedNum) + Number(displayNum);
+            }
+            else if (operation == 2) {
+                storedNum = Number(storedNum) - Number(displayNum);
+            }
+            else if (operation == 3) {
+                storedNum = Number(storedNum) * Number(displayNum);
+            }
+            else if (operation == 4) {
+                storedNum = Number(storedNum) / Number(displayNum);
+            }
+           // Check what command was put into the calculator
+            if (command == '+') {
+                operation = 1;
+            }
+            else if (command == '-') {
+                operation = 2;
+            }
+            else if (command == '*') {
+                operation = 3;
+            }
+            else if  (command == '/') {
+                operation = 4;
+            }
+           // Clear the display in order to receive a new number
+            display.value = '';
+          }
+
+        function calculate() {
+            // Select the calculator's display
+            var display = document.getElementById("display");
+                    displayNum = display.value;
+
+            // Do the math
+            if (operation == 1) {
+                displayNum = Number(storedNum) + Number(displayNum);
+            }
+            else if (operation == 2) {
+                displayNum = Number(storedNum) - Number(displayNum);
+            }
+            else if (operation == 3) {
+                displayNum = Number(storedNum) * Number(displayNum);
+            }
+            else if (operation == 4) {
+                displayNum = Number(storedNum) / Number(displayNum);
+            }
+            // Change display to the answer
+            display.value = displayNum;
+
+            // Clear all the global variables
+            operation = 0;
+            displayNum = "";
+            storedNum = "";
+            calculationFinished = true;
+          }
+
+        function cancel(){
+              displayNum = "";
+              storedNum = "";
+              operation = 0;    
+              document.getElementById("display").value=displayNum;
+          }
+
+        function del(){
+             document.getElementById("display").value=
+             document.getElementById("display").value.slice(0,-1);
+          }
+
+   </script>
+</body>
+</html>
